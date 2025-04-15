@@ -16,18 +16,18 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public Transform cameraTransform;
     public CameraController cameraFollow;
-    
+    public PlayerIKHandler ikHandler;
     
     private CharacterController controller;
     private Vector3 velocity;
-
-    public GunController gun;
+    
     
     
     private Vector2 moveInput;
-    private bool isAiming;
+    public bool isAiming;
     private bool isJumping;
     private bool isRunning;
+    private bool isFiring;
 
     private void Start()
     {
@@ -38,10 +38,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleInput();
         
-        if (Input.GetButtonDown("Fire1")) // 왼쪽 마우스 클릭
-        {
-            gun.Fire();  // 여기서 호출
-        }
+      
         
         cameraFollow.SetAiming(isAiming);
         
@@ -55,7 +52,7 @@ public class PlayerController : MonoBehaviour
         // 상태별 이동 및 애니메이션 처리
         if (isAiming)
         {
-            
+
             Move(aimwalkSpeed);
            
         }
@@ -73,6 +70,10 @@ public class PlayerController : MonoBehaviour
    
         }
 
+        if (isFiring)
+        {
+            Debug.Log("Firing");
+        }
         UpdateAnimation();
     }
 
@@ -93,7 +94,9 @@ public class PlayerController : MonoBehaviour
     private void HandleInput()
     {
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        isAiming = Input.GetMouseButton(1);
+         isAiming = Input.GetMouseButton(1);
+        ikHandler.AimIK(isAiming);
+        isFiring = Input.GetMouseButton(0);
         isJumping = Input.GetKeyDown(KeyCode.Space);
         isRunning = Input.GetKey(KeyCode.LeftShift);
     }
@@ -104,10 +107,20 @@ public class PlayerController : MonoBehaviour
         if (moveInput.magnitude > 0.1f)
         {
             animator.SetBool("Move", true);
+
+            if (isJumping)
+            {
+                animator.SetTrigger("RunJump");
+            }
         }
         if (moveInput.magnitude < 0.1f)
         {
             animator.SetBool("Move", false);
+            
+            if (isJumping)
+            {
+                animator.SetTrigger("Jump");
+            }
         }
 
         if (isRunning && !isAiming)
@@ -122,24 +135,25 @@ public class PlayerController : MonoBehaviour
     }
     private void RotateToDirection()
     {
-        Vector3 targetDirection;
+        Vector3 camForward = cameraTransform.forward;
+        Vector3 camRight = cameraTransform.right;
+
+        camForward.y = 0f;
+        camRight.y = 0f;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 targetDirection = Vector3.zero;
 
         if (isAiming)
         {
-            // 조준 시: 카메라 방향 기준 회전
-            targetDirection = cameraTransform.forward;
+            // 조준 중: 카메라 정면 기준으로 약간 오른쪽 회전
+            Quaternion rot = Quaternion.AngleAxis(50f, Vector3.up); // 카메라 기준 오프셋
+            targetDirection = rot * camForward;
         }
-        else
+        else if (moveInput.sqrMagnitude > 0.01f)
         {
-            // 이동 방향 기준 회전
-            Vector3 camForward = cameraTransform.forward;
-            Vector3 camRight = cameraTransform.right;
-
-            camForward.y = 0f;
-            camRight.y = 0f;
-            camForward.Normalize();
-            camRight.Normalize();
-
+            // 조준 아닐 때는 move 방향을 정확히 보도록 회전
             targetDirection = camForward * moveInput.y + camRight * moveInput.x;
         }
 
@@ -149,14 +163,7 @@ public class PlayerController : MonoBehaviour
             return;
 
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-
-    
-            // 가만히 → 부드럽게 회전
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                Time.deltaTime * 10f
-            );
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
         
     }
 
@@ -177,11 +184,7 @@ public class PlayerController : MonoBehaviour
         moveDir.Normalize();
 
         // 조준 중일 경우 애니메이션 파라미터 설정
-        if (aiming && animator != null)
-        {
-            animator.SetFloat("InputX", moveInput.x, 0.1f, Time.deltaTime);
-            animator.SetFloat("InputY", moveInput.y, 0.1f, Time.deltaTime);
-        }
+     
 
         controller.Move(moveDir * (speed * Time.deltaTime));
     }
@@ -193,13 +196,24 @@ public class PlayerController : MonoBehaviour
 
     private void ApplyGravity()
     {
+       
         if (IsGrounded() && velocity.y < 0)
         {
             velocity.y = -2f;
         }
         else
         {
-            velocity.y += gravity * Time.deltaTime;
+            // 상승 중과 하강 중의 중력 차등 적용
+            float fallMultiplier = 2.5f; // 하강 시 더 빠르게 떨어짐
+            if (velocity.y < 0)
+            {
+                // 낙하 중일 때 중력을 더 강하게 적용
+                velocity.y += gravity * fallMultiplier * Time.deltaTime;
+            }
+            else
+            {
+                velocity.y += gravity * Time.deltaTime;
+            }
         }
 
         controller.Move(Vector3.up * (velocity.y * Time.deltaTime));

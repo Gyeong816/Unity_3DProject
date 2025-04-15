@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,9 +25,9 @@ public class CameraController : MonoBehaviour
     
     private bool isAiming;
 
-    public void SetAiming(bool aiming)
+    private void Start()
     {
-        isAiming = aiming;
+       Cursor.lockState = CursorLockMode.Locked;
     }
 
     void LateUpdate()
@@ -47,4 +48,10 @@ public class CameraController : MonoBehaviour
         transform.LookAt(targetPosition);
     }
     
+    
+    
+    public void SetAiming(bool aiming)
+    {
+        isAiming = aiming;
+    }
 }
