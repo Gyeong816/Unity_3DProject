@@ -58,9 +58,11 @@ public class PlayerController : MonoBehaviour
                 equipment.Fire();
             }
             
+            cameraController.Shake(isFiring);
+            
             Move(aimwalkSpeed);
         }
-        else if (isRunning && !isAiming)
+        else if (isRunning && !isAiming &&!isCrouching)
         {
             
             Move(runSpeed);
