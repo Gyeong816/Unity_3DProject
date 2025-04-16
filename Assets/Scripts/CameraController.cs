@@ -17,13 +17,15 @@ public class CameraController : MonoBehaviour
     [Header("")]
     public float distance = 5f;
     public float aimdistance = 2f;
-    public Vector3 cameraOffset = new Vector3(0.5f, 1.6f, 0f); // �� ������/���� ������ ����
+    public Vector3 cameraOffset = new Vector3(0.5f, 1.6f, 0f); 
+    public Vector3 crouchCameraOffset = new Vector3(0.5f, 1.3f, 0f); 
 
     private float yaw;
     private float pitch;
     
     
     private bool isAiming;
+    private bool isCrouching;
 
     private void Start()
     {
@@ -41,8 +43,7 @@ public class CameraController : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
         Vector3 offsetDir = isAiming ? rotation * Vector3.back * aimdistance : rotation * Vector3.back * distance;
 
-        // �������� ������/���� �̵���Ų ��ġ
-        Vector3 targetPosition = target.position + rotation * cameraOffset;
+        Vector3 targetPosition = isCrouching ? target.position + rotation * crouchCameraOffset : target.position + rotation * cameraOffset;
 
         transform.position = targetPosition + offsetDir;
         transform.LookAt(targetPosition);
@@ -53,5 +54,10 @@ public class CameraController : MonoBehaviour
     public void SetAiming(bool aiming)
     {
         isAiming = aiming;
+    }
+    
+    public void SetCrouch(bool crouching)
+    {
+        isCrouching = crouching;
     }
 }

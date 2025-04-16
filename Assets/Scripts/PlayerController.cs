@@ -15,12 +15,13 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     public Animator animator;
     public Transform cameraTransform;
-    public CameraController cameraFollow;
+    public CameraController cameraController;
     public PlayerIKHandler ikHandler;
+    public Equipment equipment;
+    
     
     private CharacterController controller;
     private Vector3 velocity;
-    
     
     
     private Vector2 moveInput;
@@ -28,7 +29,9 @@ public class PlayerController : MonoBehaviour
     private bool isJumping;
     private bool isRunning;
     private bool isFiring;
-
+    private bool isCrouching;
+    private bool isCrouchAiming;
+    private bool isMoving;
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -37,24 +40,25 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        
-      
-        
-        cameraFollow.SetAiming(isAiming);
-        
         ApplyGravity();
+        
+        cameraController.SetAiming(isAiming);
+        cameraController.SetCrouch(isCrouchAiming);
+        ikHandler.AimIK(isAiming);
+        
         
         if (IsGrounded() && isJumping)
         {
             Jump();
         }
-
-        // 상태별 이동 및 애니메이션 처리
         if (isAiming)
         {
-
+            if (isFiring)
+            {
+                equipment.Fire();
+            }
+            
             Move(aimwalkSpeed);
-           
         }
         else if (isRunning && !isAiming)
         {
@@ -65,22 +69,22 @@ public class PlayerController : MonoBehaviour
         }
         else if (moveInput.magnitude > 0.1f)
         {
-            
-            Move(walkSpeed);
-   
+            if (isMoving&&!isCrouching)
+            {
+              
+                Move(walkSpeed);
+            }
+            if (isCrouching)
+            {
+                
+                Move(aimwalkSpeed);
+            }
         }
-
-        if (isFiring)
-        {
-            Debug.Log("Firing");
-        }
+        
         UpdateAnimation();
     }
 
-    private void ChangeCamera()
-    {
-        
-    }
+
     
     private void LateUpdate()
     {
@@ -93,12 +97,29 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
+
+        
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-         isAiming = Input.GetMouseButton(1);
-        ikHandler.AimIK(isAiming);
+        isMoving = moveInput.magnitude > 0.1f;
+        isAiming = Input.GetMouseButton(1);
         isFiring = Input.GetMouseButton(0);
         isJumping = Input.GetKeyDown(KeyCode.Space);
         isRunning = Input.GetKey(KeyCode.LeftShift);
+        
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            isCrouching = !isCrouching; 
+        }
+
+        if (isAiming && isCrouching)
+        {
+            isCrouchAiming = true;
+        }
+        else
+        {
+            isCrouchAiming = false;
+        }
     }
 
 
@@ -125,13 +146,16 @@ public class PlayerController : MonoBehaviour
 
         if (isRunning && !isAiming)
         {
-            animator.SetBool("Run", isRunning);
+            animator.SetBool("Run", true);
         }
-        if (!isRunning)
+        if (!isRunning || isAiming)
         {
             animator.SetBool("Run", false);
         }
+
+        animator.SetBool("Crouch", isCrouching);
         
+       
     }
     private void RotateToDirection()
     {

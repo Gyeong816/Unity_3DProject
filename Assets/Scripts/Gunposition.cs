@@ -10,8 +10,8 @@ public class Gunposition : MonoBehaviour
     {
         if (shoulder == null) return;
 
-        // 위치만 따라가고 회전은 고정
+   
         transform.position = shoulder.position;
-        // 회전은 유지 (원하는 경우 회전도 제어 가능)
+       
     }
 }

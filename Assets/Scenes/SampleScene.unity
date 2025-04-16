@@ -313,6 +313,7 @@ MonoBehaviour:
   distance: 3
   aimdistance: 1.5
   cameraOffset: {x: 0.5, y: 1.6, z: 0}
+  crouchCameraOffset: {x: 0.5, y: 1.4, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,8 +501,9 @@ MonoBehaviour:
   gravity: -9.81
   animator: {fileID: 7659230265594639804}
   cameraTransform: {fileID: 330585546}
-  cameraFollow: {fileID: 330585548}
+  cameraController: {fileID: 330585548}
   ikHandler: {fileID: 7659230265594639805}
+  equipment: {fileID: 3791150557899635672}
   isAiming: 0
 --- !u!4 &495473895
 Transform:
@@ -3276,6 +3278,7 @@ MonoBehaviour:
   RightHandTarget: {fileID: 1248304096}
   WeaponTransform: {fileID: 3791150557899635671}
   IKWeight: 1
+  recoilLocalRotation: {x: -0.0850945, y: 0.047210112, z: 0.047210112, w: 0.99413353}
 --- !u!1 &3887795284981861202
 GameObject:
   m_ObjectHideFlags: 0
@@ -4442,7 +4445,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7659230265594639803}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.13052616, z: 0, w: 0.9914449}
+  m_LocalRotation: {x: 0, y: 0.08715578, z: 0, w: 0.9961947}
   m_LocalPosition: {x: 0, y: -0.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4464,7 +4467,7 @@ Transform:
   - {fileID: 189915230272932037}
   - {fileID: 930180628494079276}
   m_Father: {fileID: 495473895}
-  m_LocalEulerAnglesHint: {x: 0, y: 15, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 10, z: 0}
 --- !u!4 &7025280318432959585
 Transform:
   m_ObjectHideFlags: 0
