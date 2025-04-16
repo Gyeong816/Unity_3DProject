@@ -6,7 +6,7 @@ public class PlayerIKHandler : MonoBehaviour
 {
     private Animator animator;
 
-    public Equipment currentEquipment;
+    public Gun currentEquipment;
     public Transform aimTarget; // 카메라 중앙 기준 조준 지점
     
     public Transform handPosition;
@@ -17,13 +17,11 @@ public class PlayerIKHandler : MonoBehaviour
     [Range(0f, 1f)] public float headWeight = 0.5f;
     [Range(0f, 1f)] public float clampWeight = 0.5f;
 
-    [Header("총기 회전 설정")] public float weaponRotateSpeed = 10f;
+    public float weaponRotateSpeed = 10f;
     public bool lockYRotation = false;
 
     private bool playerAiming = false;
     
-    private float currentRightIKWeight = 0f;
-    private float rightIKLerpSpeed = 5f;
 
     private void Awake()
     {

@@ -37,10 +37,7 @@ public class CameraController : MonoBehaviour
     }
 
     
-    public void Shake(bool isfiring)
-    {
-        isFiring = isfiring;
-    }
+   
     
     void LateUpdate()
     {
@@ -75,7 +72,10 @@ public class CameraController : MonoBehaviour
         transform.LookAt(targetPosition);
     }
     
-    
+    public void SetShake(bool isfiring)
+    {
+        isFiring = isfiring;
+    }
     
     public void SetAiming(bool aiming)
     {

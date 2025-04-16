@@ -1,29 +1,60 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Random = UnityEngine.Random;
 
-public class Equipment : MonoBehaviour
+public class Gun : MonoBehaviour
 {
     public Transform LeftHandTarget;
     public Transform RightHandTarget;
     
     public Transform WeaponRoot;
+    public Transform Muzzle;
     
+    
+    public float rayLength = 100f;
     
    [Range(0f, 1f)] public float IKWeight = 1f;
    
    private Quaternion originalLocalRotation;
        
+   private bool isFiring;
    
-   public void Fire()
+   public void SetFire(bool isfiring)
+   {
+       isFiring = isfiring;
+   }
+
+   private void Update()
+   {
+       if (isFiring)
+       {
+           Fire();
+       }
+       
+       Debug.DrawRay(Muzzle.transform.position, Muzzle.transform.forward * rayLength, Color.red);
+   }
+
+
+   private void Fire()
    {
        originalLocalRotation = transform.localRotation;
        Recoil();
+
+       Ray ray = new Ray(Muzzle.transform.position, Muzzle.transform.forward);
+    
+       if (Physics.Raycast(ray, out RaycastHit hit, rayLength))
+       {
+           Debug.Log("Ray hit: " + hit.collider.name); 
+           CombatSystem.Instance.ApplyDamage(hit, 20f); 
+       }
+       else
+       {
+           Debug.Log("Ray missed!"); 
+       }
    }
-   
-  
-   
    private void Recoil()
    {
        

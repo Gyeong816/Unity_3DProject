@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public Transform cameraTransform;
     public CameraController cameraController;
     public PlayerIKHandler ikHandler;
-    public Equipment equipment;
+    public Gun equipment;
     
     
     private CharacterController controller;
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private bool isJumping;
     private bool isRunning;
     private bool isFiring;
+    private bool isAimFiring;
     private bool isCrouching;
     private bool isCrouchAiming;
     private bool isMoving;
@@ -45,7 +46,8 @@ public class PlayerController : MonoBehaviour
         cameraController.SetAiming(isAiming);
         cameraController.SetCrouch(isCrouchAiming);
         ikHandler.AimIK(isAiming);
-        
+        equipment.SetFire(isAimFiring);
+        cameraController.SetShake(isAimFiring);
         
         if (IsGrounded() && isJumping)
         {
@@ -53,15 +55,10 @@ public class PlayerController : MonoBehaviour
         }
         if (isAiming)
         {
-            if (isFiring)
-            {
-                equipment.Fire();
-            }
-            
-            cameraController.Shake(isFiring);
             
             Move(aimwalkSpeed);
         }
+
         else if (isRunning && !isAiming &&!isCrouching)
         {
             
@@ -90,7 +87,6 @@ public class PlayerController : MonoBehaviour
     
     private void LateUpdate()
     {
-        // 움직이거나 조준 중일 때만 회전
         if (moveInput.sqrMagnitude > 0.01f || isAiming)
         {
             RotateToDirection();
@@ -114,6 +110,14 @@ public class PlayerController : MonoBehaviour
             isCrouching = !isCrouching; 
         }
 
+        if (isAiming && isFiring)
+        {
+            isAimFiring = true;
+        }
+        else
+        {
+            isAimFiring = false;
+        }
         if (isAiming && isCrouching)
         {
             isCrouchAiming = true;
