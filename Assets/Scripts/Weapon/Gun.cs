@@ -14,6 +14,9 @@ public class Gun : MonoBehaviour
     public Transform Muzzle;
     
     
+    public float fireRate = 0.1f; 
+    private float nextFireTime = 0f;
+    
     public float rayLength = 100f;
     
    [Range(0f, 1f)] public float IKWeight = 1f;
@@ -29,11 +32,12 @@ public class Gun : MonoBehaviour
 
    private void Update()
    {
-       if (isFiring)
+       if (isFiring && Time.time >= nextFireTime)
        {
+           nextFireTime = Time.time + fireRate;
            Fire();
        }
-       
+
        Debug.DrawRay(Muzzle.transform.position, Muzzle.transform.forward * rayLength, Color.red);
    }
 
@@ -47,12 +51,7 @@ public class Gun : MonoBehaviour
     
        if (Physics.Raycast(ray, out RaycastHit hit, rayLength))
        {
-           Debug.Log("Ray hit: " + hit.collider.name); 
            CombatSystem.Instance.ApplyDamage(hit, 20f); 
-       }
-       else
-       {
-           Debug.Log("Ray missed!"); 
        }
    }
    private void Recoil()
@@ -67,19 +66,19 @@ public class Gun : MonoBehaviour
        
      
        recoilSequence.Append(
-           transform.DOLocalRotateQuaternion(originalLocalRotation * Quaternion.Euler(pitch, yaw, roll), 0.05f)
+           transform.DOLocalRotateQuaternion(originalLocalRotation * Quaternion.Euler(pitch, yaw, roll), 0.1f)
        );
        recoilSequence.Join(
-           WeaponRoot.transform.DOLocalMove( new Vector3(0f, 0.004f, 0.310f), 0.05f)
+           WeaponRoot.transform.DOLocalMove( new Vector3(0f, 0.004f, 0.310f), 0.1f)
        );
        
 
      
        recoilSequence.Append(
-           transform.DOLocalRotateQuaternion(originalLocalRotation, 0.05f)
+           transform.DOLocalRotateQuaternion(originalLocalRotation, 0.1f)
        );
        recoilSequence.Join(
-           WeaponRoot.transform.DOLocalMove(new Vector3(0f, 0.004f, 0.358f), 0.05f)
+           WeaponRoot.transform.DOLocalMove(new Vector3(0f, 0.004f, 0.358f), 0.1f)
        );
    }
 }

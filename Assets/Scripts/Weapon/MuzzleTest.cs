@@ -10,6 +10,6 @@ public class MuzzleTest : MonoBehaviour
 
     void Update()
     {
-        Debug.DrawRay(transform.position, transform.forward * rayLength, Color.red);
+        Debug.DrawRay(transform.position, transform.forward * rayLength, Color.yellow);
     }
 }
