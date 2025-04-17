@@ -4,22 +4,65 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public List<PartData> hitParts;
+    private static readonly int HEADSHOT = Animator.StringToHash("Headshot");
+    private static readonly int DIE = Animator.StringToHash("Die");
     
-    public void TakeHit(Collider hitCollider, float baseDamage)
-    {
-        foreach (var part in hitParts)
-        {
-            if (part.collider == hitCollider)
-            {
-                float finalDamage = baseDamage * part.damageValue;
-                Debug.Log($"{part.partType} 피격!!, 피해량{finalDamage}");
-
-               
-                return;
-            }
-        }
+    public Animator animator;
+    
+    
+    public float hp = 100;
+    
+    
+    private bool isDead = false;
 
    
+    public void TakeHit(Parts part, float damage)
+    {
+        if(isDead) return;
+        
+        switch (part)
+        {
+            case Parts.Head:
+                Debug.Log(" Head Hit");
+                HeadShotDie();
+                break;
+            case Parts.Body:
+                Debug.Log("Body Hit");
+                TakeDamage(damage);
+                break;
+            case Parts.Arm:
+                Debug.Log("Arm Hit");
+                TakeDamage(damage);
+                break;
+            case Parts.Leg:
+                Debug.Log("Leg Hit");
+                TakeDamage(damage);
+                break;
+        }
+        
     }
+
+    private void HeadShotDie()
+    {
+        animator.SetTrigger(HEADSHOT);
+        isDead = true;
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger(DIE);
+        isDead = true;
+    }
+    
+    private void TakeDamage(float damage)
+    {
+        hp -= damage;
+        Debug.Log($"데미지 {damage},  남은 hp{hp}");
+        
+        if (hp <= 0)
+        {
+            Die();
+        }
+    }
+    
 }

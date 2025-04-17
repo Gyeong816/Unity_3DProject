@@ -12,6 +12,7 @@ public class Gun : MonoBehaviour
     
     public Transform WeaponRoot;
     public Transform Muzzle;
+    public float WeaponDamage;
     
     
     public float fireRate = 0.1f; 
@@ -51,7 +52,7 @@ public class Gun : MonoBehaviour
     
        if (Physics.Raycast(ray, out RaycastHit hit, rayLength))
        {
-           CombatSystem.Instance.ApplyDamage(hit, 20f); 
+           CombatSystem.Instance.ApplyDamage(hit,WeaponDamage); 
        }
    }
    private void Recoil()
