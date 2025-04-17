@@ -6,6 +6,7 @@ public class HitPart : MonoBehaviour
 {
     public Enemy owner;       
     public Parts partType;
+    
     public float damageValue;
     
     private void OnValidate()

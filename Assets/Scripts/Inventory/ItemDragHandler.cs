@@ -16,10 +16,10 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public int itemWidth = 3;
     public int itemHeight = 2;
     private bool originalRotation = false;
-    
+    private Vector2 originalSizeDelta;
     
     private Image itemImage;
-    private Image gunImage;
+
 
     public float pivotX = 0.83f;
     public float pivotY = 0.26f;
@@ -29,14 +29,15 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public InventoryPanel inventoryPanel;
     private RectTransform rt;
     
-    private bool canPlace = false; 
+    private bool canPlace = false;
+
+    private bool takeWeaponSlot = false;
      
     void Awake()
     {
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
         itemImage = GetComponent<Image>();
-        gunImage = GetComponentInChildren<Image>();
         rt = GetComponent<RectTransform>();
     }
 
@@ -73,7 +74,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 
                 isrotated = true;
 
-                gunImage.rectTransform.localEulerAngles = new Vector3(0, 0, -90f);
+                itemImage.rectTransform.localEulerAngles = new Vector3(0, 0, -90f);
             }
             else
             {
@@ -84,7 +85,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 rt.pivot = new Vector2(pivotX, pivotY);
                 
 
-                gunImage.rectTransform.localEulerAngles = new Vector3(0, 0, 0f);
+                itemImage.rectTransform.localEulerAngles = new Vector3(0, 0, 0f);
             }
             
         }
@@ -92,11 +93,14 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        
         isDragging = true;
 
         originalParent = transform.parent;
         originalPosition = transform.position;
-        originalRotation = isrotated; 
+        originalRotation = isrotated;
+
+        originalSizeDelta = GetComponent<RectTransform>().sizeDelta; 
 
         transform.SetParent(canvas.transform);
         canvasGroup.blocksRaycasts = false;
@@ -119,25 +123,50 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         
         GameObject target = eventData.pointerEnter;
         
-       
+        RectTransform itemRect = GetComponent<RectTransform>();
+        RectTransform originalRect = itemRect;
 
-        if (target != null && target.CompareTag("Slot"))
+        
+        if (target.CompareTag("Slot"))
         {
+            
             Slot slot = target.GetComponent<Slot>();
 
             CanPlaceItem(slot.x, slot.y);
-
+            
             if (canPlace)
             {
                 transform.SetParent(target.transform);
                 transform.position = target.transform.position;
 
                 OccupySlots(slot.x, slot.y);
+
+                if (takeWeaponSlot)
+                {
+                    itemRect.sizeDelta = originalSizeDelta; 
+                    takeWeaponSlot = false;
+                }
+                
             }
             else
             {
                 ReturnItem();  
             }
+            
+            
+        }
+        else if (target.CompareTag("WeaponSlot"))
+        {
+            takeWeaponSlot = true;
+            transform.SetParent(target.transform);
+            transform.position = target.transform.position;
+            
+            
+            RectTransform slotRect = target.GetComponent<RectTransform>();
+            
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            
+            itemRect.sizeDelta = slotRect.sizeDelta;
             
         }
         else
@@ -160,21 +189,21 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         slot.isTaken = true;
     }
 
-    // 회전 상태 복원
+  
     isrotated = originalRotation;
 
-    // 회전 값 반영
+
     if (isrotated)
     {
         rt.pivot = new Vector2(pivotX, rotatedpivotY);
         itemImage.rectTransform.localEulerAngles = new Vector3(0, 0, -90f);
-        gunImage.rectTransform.localEulerAngles = new Vector3(0, 0, -90f);
+
     }
     else
     {
         rt.pivot = new Vector2(pivotX, pivotY);
         itemImage.rectTransform.localEulerAngles = Vector3.zero;
-        gunImage.rectTransform.localEulerAngles = Vector3.zero;
+
     }
 }
     private void CanPlaceItem(int startX, int startY)
