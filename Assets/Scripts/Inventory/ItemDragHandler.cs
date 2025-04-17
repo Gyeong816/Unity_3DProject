@@ -16,14 +16,14 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public int itemWidth = 3;
     public int itemHeight = 2;
     private bool originalRotation = false;
-    private Vector2 originalSizeDelta;
+
     
     private Image itemImage;
 
 
-    public float pivotX = 0.83f;
-    public float pivotY = 0.26f;
-    public float rotatedpivotY = 0.75f;
+    public float pivotX ;
+    public float pivotY;
+    public float rotatedpivotY ;
     
     private List<Slot> occupiedSlots = new List<Slot>();
     public InventoryPanel inventoryPanel;
@@ -33,6 +33,14 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     private bool takeWeaponSlot = false;
      
+    
+    private float originalWidth;
+    private float originalHeight;
+
+
+    public PlayerWeapon PlayerWeapon;
+    
+    
     void Awake()
     {
         canvas = GetComponentInParent<Canvas>();
@@ -99,8 +107,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         originalParent = transform.parent;
         originalPosition = transform.position;
         originalRotation = isrotated;
-
-        originalSizeDelta = GetComponent<RectTransform>().sizeDelta; 
+        
 
         transform.SetParent(canvas.transform);
         canvasGroup.blocksRaycasts = false;
@@ -124,7 +131,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         GameObject target = eventData.pointerEnter;
         
         RectTransform itemRect = GetComponent<RectTransform>();
-        RectTransform originalRect = itemRect;
+
 
         
         if (target.CompareTag("Slot"))
@@ -143,7 +150,8 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
                 if (takeWeaponSlot)
                 {
-                    itemRect.sizeDelta = originalSizeDelta; 
+                    itemRect.sizeDelta = new Vector2(200f, 100f);
+                    rt.pivot = new Vector2(pivotX, pivotY);
                     takeWeaponSlot = false;
                 }
                 
@@ -161,13 +169,15 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             transform.SetParent(target.transform);
             transform.position = target.transform.position;
             
-            
             RectTransform slotRect = target.GetComponent<RectTransform>();
             
             rt.pivot = new Vector2(0.5f, 0.5f);
             
             itemRect.sizeDelta = slotRect.sizeDelta;
-            
+
+
+            PlayerWeapon.SetWeapon(PlayerWeapon.WeaponType.AK47);
+
         }
         else
         {
@@ -179,33 +189,40 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     }
 
+    
+    
    private void ReturnItem()
-{
-    transform.SetParent(originalParent);
-    transform.position = originalPosition;
+   {
+       transform.SetParent(originalParent);
+       transform.position = originalPosition;
 
-    foreach (var slot in occupiedSlots)
-    {
-        slot.isTaken = true;
-    }
+       foreach (var slot in occupiedSlots)
+       {
+           slot.isTaken = true;
+       }
 
   
-    isrotated = originalRotation;
+       isrotated = originalRotation;
 
 
-    if (isrotated)
-    {
-        rt.pivot = new Vector2(pivotX, rotatedpivotY);
-        itemImage.rectTransform.localEulerAngles = new Vector3(0, 0, -90f);
+       if (isrotated)
+       {
+           rt.pivot = new Vector2(pivotX, rotatedpivotY);
+           itemImage.rectTransform.localEulerAngles = new Vector3(0, 0, -90f);
 
-    }
-    else
-    {
-        rt.pivot = new Vector2(pivotX, pivotY);
-        itemImage.rectTransform.localEulerAngles = Vector3.zero;
+       }
+       else if (takeWeaponSlot)
+       {
+           rt.pivot = new Vector2(0.5f, 0.5f);
+           itemImage.rectTransform.localEulerAngles = Vector3.zero;
+       }
+       else
+       {
+           rt.pivot = new Vector2(pivotX, pivotY);
+           itemImage.rectTransform.localEulerAngles = Vector3.zero;
 
-    }
-}
+       }
+   }
     private void CanPlaceItem(int startX, int startY)
     {
         canPlace = true;

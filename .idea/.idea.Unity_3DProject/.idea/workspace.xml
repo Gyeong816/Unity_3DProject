@@ -16,7 +16,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9b89611000504a9585efec19be4faf3b27800/43/5c97160a/Animator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Enemy.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/PartData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerWeapon.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/UIManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.cinemachine@2.9.7/Runtime/Helpers/CinemachineInputProvider.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -103,7 +103,9 @@
       <workItem from="1744801407746" duration="3288000" />
       <workItem from="1744849448249" duration="7075000" />
       <workItem from="1744864348420" duration="6434000" />
-      <workItem from="1744871228396" duration="3212000" />
+      <workItem from="1744871228396" duration="7206000" />
+      <workItem from="1744884366341" duration="6433000" />
+      <workItem from="1744890938443" duration="1639000" />
     </task>
     <servers />
   </component>

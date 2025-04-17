@@ -17,8 +17,9 @@ public class PlayerController : MonoBehaviour
     public Transform cameraTransform;
     public CameraController cameraController;
     public PlayerIKHandler ikHandler;
-    public Gun equipment;
-    
+    //public Ak47 equipment;
+
+    public PlayerWeapon playerWeapon;
     
     private CharacterController controller;
     private Vector3 velocity;
@@ -46,24 +47,36 @@ public class PlayerController : MonoBehaviour
         cameraController.SetAiming(isAiming);
         cameraController.SetCrouch(isCrouchAiming);
         ikHandler.AimIK(isAiming);
-        equipment.SetFire(isAimFiring);
+        
+       // playerWeapon.SetFire(isAimFiring);
+        
         cameraController.SetShake(isAimFiring);
         
         if (IsGrounded() && isJumping)
         {
             Jump();
         }
+        
         if (isAiming)
         {
             
             Move(aimwalkSpeed);
+
+            if (isFiring)
+            {
+                playerWeapon.Fire();
+            }
+        }
+        else
+        {
+            
+            isFiring = false;
         }
 
-        else if (isRunning && !isAiming &&!isCrouching)
+        if (isRunning && !isAiming &&!isCrouching)
         {
             
             Move(runSpeed);
-      
             
         }
         else if (moveInput.magnitude > 0.1f)

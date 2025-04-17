@@ -6,7 +6,9 @@ public class PlayerIKHandler : MonoBehaviour
 {
     private Animator animator;
 
-    public Gun currentEquipment;
+
+    public PlayerWeapon playerWeapon;
+   
     public Transform gunAimTarget;
     public Transform bodyAimTarget;
     
@@ -36,14 +38,14 @@ public class PlayerIKHandler : MonoBehaviour
 
  private void OnAnimatorIK(int layerIndex)
  {
-    if (animator == null || currentEquipment == null) return;
+    if (animator == null || playerWeapon == null) return;
 
-    float rightIKWeight = playerAiming ? currentEquipment.IKWeight : 0f;
-    float leftIKWeight = currentEquipment.IKWeight;
+    float rightIKWeight = playerAiming ? playerWeapon.IKWeight : 0f;
+    float leftIKWeight = playerWeapon.IKWeight;
 
-    Transform leftHandTarget = currentEquipment.LeftHandTarget;
-    Transform rightHandTarget = currentEquipment.RightHandTarget;
-    Transform weapon = currentEquipment.transform;
+    Transform leftHandTarget = playerWeapon.LeftHandTarget;
+    Transform rightHandTarget = playerWeapon.RightHandTarget;
+    Transform weapon = playerWeapon.GetCurrentWeaponTransform();
     Transform anchor = gunPosition;
 
     
