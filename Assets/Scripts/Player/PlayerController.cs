@@ -177,13 +177,13 @@ public class PlayerController : MonoBehaviour
 
         if (isAiming)
         {
-            // 조준 중: 카메라 정면 기준으로 약간 오른쪽 회전
-            Quaternion rot = Quaternion.AngleAxis(50f, Vector3.up); // 카메라 기준 오프셋
+            // 조준 중일때는 카메라 정면 기준 약간 오른쪽 회전
+            Quaternion rot = Quaternion.AngleAxis(50f, Vector3.up); 
             targetDirection = rot * camForward;
         }
         else if (moveInput.sqrMagnitude > 0.01f)
         {
-            // 조준 아닐 때는 move 방향을 정확히 보도록 회전
+            // 조준 아닐 때는 이동 방향 보도록 회전
             targetDirection = camForward * moveInput.y + camRight * moveInput.x;
         }
 
@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour
     {
         if (moveInput.sqrMagnitude <= 0.01f) return;
 
-        // 카메라 기준 방향 계산
+   
         Vector3 camForward = cameraTransform.forward;
         Vector3 camRight = cameraTransform.right;
         camForward.y = 0f;
@@ -212,8 +212,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDir = camForward * moveInput.y + camRight * moveInput.x;
         moveDir.Normalize();
-
-        // 조준 중일 경우 애니메이션 파라미터 설정
+        
      
 
         controller.Move(moveDir * (speed * Time.deltaTime));
@@ -233,11 +232,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // 상승 중과 하강 중의 중력 차등 적용
-            float fallMultiplier = 2.5f; // 하강 시 더 빠르게 떨어짐
+        
+            float fallMultiplier = 2.5f; 
             if (velocity.y < 0)
             {
-                // 낙하 중일 때 중력을 더 강하게 적용
+          
                 velocity.y += gravity * fallMultiplier * Time.deltaTime;
             }
             else

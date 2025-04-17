@@ -31,18 +31,24 @@ public class CameraController : MonoBehaviour
     private bool isAiming;
     private bool isCrouching;
     private bool isFiring;
-    private void Start()
-    {
-       Cursor.lockState = CursorLockMode.Locked;
-    }
-
+    private bool isCamOff;
+   
     
    
     
     void LateUpdate()
     {
-        if (target == null) return;
 
+        if (!isCamOff)
+        {
+            CameraMove();
+        }
+
+       
+    }
+
+    private void CameraMove()
+    {
         yaw += Input.GetAxis("Mouse X") * mouseSensitivityX;
         pitch -= Input.GetAxis("Mouse Y") * mouseSensitivityY;
         pitch = Mathf.Clamp(pitch, minY, maxY);
@@ -70,7 +76,10 @@ public class CameraController : MonoBehaviour
 
         transform.position = targetPosition + offsetDir;
         transform.LookAt(targetPosition);
+        
+        
     }
+    
     
     public void SetShake(bool isfiring)
     {
@@ -85,5 +94,10 @@ public class CameraController : MonoBehaviour
     public void SetCrouch(bool crouching)
     {
         isCrouching = crouching;
+    }
+
+    public void SetCamOn(bool iscamOff)
+    {
+        isCamOff = iscamOff;
     }
 }

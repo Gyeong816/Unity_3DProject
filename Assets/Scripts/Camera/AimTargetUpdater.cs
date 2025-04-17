@@ -5,24 +5,42 @@ using UnityEngine;
 public class AimTargetUpdater : MonoBehaviour
 {
     public Camera mainCamera;
-    public Transform aimTarget;
+    public Transform gunAimTarget;
     public float maxDistance = 100f;
     public LayerMask aimLayerMask; 
 
+    public Transform bodyAimTarget;
+    public float distance = 30f;
+    
     void Update()
     {
-        Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        Ray gunRay = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
-        if (Physics.Raycast(ray, out RaycastHit hit, maxDistance, aimLayerMask))
+        if (Physics.Raycast(gunRay, out RaycastHit hit, maxDistance, aimLayerMask))
         {
-            aimTarget.position = hit.point;
+            gunAimTarget.position = hit.point;
       
         }
         else
         {
-            aimTarget.position = ray.origin + ray.direction * maxDistance;
+            gunAimTarget.position = gunRay.origin + gunRay.direction * maxDistance;
         }
 
-        Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.yellow);
+        Debug.DrawRay(gunRay.origin, gunRay.direction * maxDistance, Color.yellow);
+        
+        
+        
+        
+        Ray bodyrRay = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f)); 
+        
+        bodyAimTarget.position = bodyrRay.origin + bodyrRay.direction * distance;
+        
+        Debug.DrawRay(bodyrRay.origin, bodyrRay.direction * distance, Color.grey);
+        
     }
+    
+ 
+   
+
+
 }

@@ -7,7 +7,8 @@ public class PlayerIKHandler : MonoBehaviour
     private Animator animator;
 
     public Gun currentEquipment;
-    public Transform aimTarget; // 카메라 중앙 기준 조준 지점
+    public Transform gunAimTarget;
+    public Transform bodyAimTarget;
     
     public Transform handPosition;
     
@@ -61,13 +62,12 @@ public class PlayerIKHandler : MonoBehaviour
         }
 
         animator.SetLookAtWeight(1f, bodyWeight, headWeight, 0f, clampWeight);
-        animator.SetLookAtPosition(aimTarget.position);
+        animator.SetLookAtPosition(bodyAimTarget.position);
 
-        Vector3 direction = aimTarget.position - anchor.position;
-       
-        Debug.DrawRay(anchor.position, direction.normalized * 100f, Color.blue);
         
-           
+        
+        Vector3 direction = gunAimTarget.position - anchor.position;
+        
         Quaternion targetRot = Quaternion.LookRotation(direction.normalized);
         weapon.rotation = Quaternion.Slerp(weapon.rotation, targetRot, Time.deltaTime * weaponRotateSpeed);
         

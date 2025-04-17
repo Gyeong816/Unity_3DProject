@@ -5,7 +5,9 @@ public enum Parts
 {
     Unknown,
     Body,
-    Head
+    Head,
+    Leg,
+    Arm
 }
 
 [System.Serializable]
