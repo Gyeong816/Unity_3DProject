@@ -782,12 +782,15 @@ MonoBehaviour:
   itemWidth: 2
   itemHeight: 1
   isWeapon: 1
+  isEquipment: 0
   weaponType: 1
+  equipmentType: 0
   pivotX: 0.75
   pivotY: 0.5
   rotatedpivotY: 0.5
   inventoryPanel: {fileID: 594459220}
-  PlayerWeapon: {fileID: 1668992209}
+  playerWeapon: {fileID: 0}
+  playerEquipment: {fileID: 0}
 --- !u!114 &378867425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1072,7 +1075,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465690606}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -2719,7 +2722,7 @@ GameObject:
   - component: {fileID: 936810738}
   m_Layer: 5
   m_Name: HelmetSlot
-  m_TagString: Untagged
+  m_TagString: HelmetSlot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2979,12 +2982,15 @@ MonoBehaviour:
   itemWidth: 2
   itemHeight: 1
   isWeapon: 1
+  isEquipment: 0
   weaponType: 2
+  equipmentType: 0
   pivotX: 0.75
   pivotY: 0.5
   rotatedpivotY: 0.5
   inventoryPanel: {fileID: 594459220}
-  PlayerWeapon: {fileID: 1668992209}
+  playerWeapon: {fileID: 0}
+  playerEquipment: {fileID: 0}
 --- !u!114 &1120480127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3649,7 +3655,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: -18}
+  m_AnchoredPosition: {x: 45, y: -18}
   m_SizeDelta: {x: 157.66, y: 71.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1367514520
@@ -3674,7 +3680,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 28
+    m_FontSize: 23
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -3685,7 +3691,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Item
+  m_Text: Helmet
 --- !u!222 &1367514521
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5615,7 +5621,7 @@ GameObject:
   - component: {fileID: 1908025619}
   - component: {fileID: 1908025620}
   m_Layer: 5
-  m_Name: Small_Item
+  m_Name: Helmet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5665,12 +5671,15 @@ MonoBehaviour:
   itemWidth: 1
   itemHeight: 1
   isWeapon: 0
+  isEquipment: 1
   weaponType: 0
+  equipmentType: 2
   pivotX: 0.5
   pivotY: 0.5
   rotatedpivotY: 0
   inventoryPanel: {fileID: 594459220}
-  PlayerWeapon: {fileID: 1668992209}
+  playerWeapon: {fileID: 1668992209}
+  playerEquipment: {fileID: 0}
 --- !u!225 &1908025620
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -14290,7 +14299,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4643210686580933200
 Transform:
   m_ObjectHideFlags: 0

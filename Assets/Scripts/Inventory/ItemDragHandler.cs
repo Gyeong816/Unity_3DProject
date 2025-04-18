@@ -11,9 +11,13 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public int itemWidth = 1;
     public int itemHeight = 1;
     public bool isWeapon = false;
+    public bool isEquipment = false;
     
     public PlayerWeapon.WeaponType weaponType = PlayerWeapon.WeaponType.None;
-    private PlayerWeapon.WeaponType none = PlayerWeapon.WeaponType.None;
+    private PlayerWeapon.WeaponType noneWeapon = PlayerWeapon.WeaponType.None;
+    
+    public PlayerEquipment.EquipmentType equipmentType = PlayerEquipment.EquipmentType.None;
+    private PlayerEquipment.EquipmentType noneEquipment = PlayerEquipment.EquipmentType.None;
 
     [Header("Pivot Settings")]
     public float pivotX = 0f;
@@ -22,7 +26,8 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     [Header("References")]
     public InventoryPanel inventoryPanel;
-    public PlayerWeapon PlayerWeapon;
+    public PlayerWeapon playerWeapon;
+    public PlayerEquipment playerEquipment;
 
     private Transform originalParent;
     private Vector2 originalPosition;
@@ -35,6 +40,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private bool isrotated = false;
     private bool originalRotation = false;
     private bool takeWeaponSlot = false;
+    private bool takeEquipment = false;
     private bool canPlace = false;
 
     private List<Slot> occupiedSlots = new List<Slot>();
@@ -108,7 +114,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                     itemRect.sizeDelta = new Vector2(itemWidth * 100f, itemHeight * 100f);
                     rt.pivot = new Vector2(pivotX, pivotY);
                     takeWeaponSlot = false;
-                    PlayerWeapon.SetWeapon(none);
+                    playerWeapon.SetWeapon(noneWeapon);
                 }
             }
             else
@@ -126,7 +132,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             rt.pivot = new Vector2(0.5f, 0.5f);
             itemRect.sizeDelta = slotRect.sizeDelta;
 
-            PlayerWeapon.SetWeapon(weaponType);
+            playerWeapon.SetWeapon(weaponType);
         }
         else
         {
