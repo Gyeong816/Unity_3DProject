@@ -7,6 +7,8 @@ TagManager:
   - Slot
   - WeaponSlot
   - HelmetSlot
+  - CinemachineTarget
+  - VestSlot
   layers:
   - Default
   - TransparentFX

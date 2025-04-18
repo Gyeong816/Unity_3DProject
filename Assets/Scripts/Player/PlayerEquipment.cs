@@ -6,70 +6,72 @@ using UnityEngine.PlayerLoop;
 
 public class PlayerEquipment : MonoBehaviour
 {
-    [Header("PlayerEquipment")] 
-    public EmptyGun emptyGun;
-    public Ak47 ak47;
-    public M3 m3;
-    
+    [Header("PlayerEquipment")]
+    public GameObject Helmet;
+    public GameObject Vest;
+
 
     public enum EquipmentType 
-    { 
-        None, 
-        Backpack, 
+    {
+        NoneHelmet,
+        NoneVest, 
         Helmet,
         Vest
     }
-    
-    
- 
-    
-    
-    
-    
+
+
+
+
+
     private EquipmentType currentEquipment;
     
     
     
     private void Start()
     {
-       emptyGun.gameObject.SetActive(true);
-       ak47.gameObject.SetActive(false);
-       m3.gameObject.SetActive(false);
-       SetWeapon(EquipmentType.None);
+      
+      SetEquipment(EquipmentType.NoneHelmet);
+      SetEquipment(EquipmentType.NoneVest);
+
     }
     
 
-    public void SetWeapon(EquipmentType equipmentType)
+    public void SetEquipment(EquipmentType equipmentType)
     {
-        emptyGun.gameObject.SetActive(false);
-        ak47.gameObject.SetActive(false);
-        m3.gameObject.SetActive(false);
-        
+
+
+
         switch (equipmentType)
         {
-            case EquipmentType.None:
-                 emptyGun.gameObject.SetActive(true);
+           
+             case EquipmentType.NoneHelmet:
 
-                 break;
-             
-             case EquipmentType.Backpack:
-                 ak47.gameObject.SetActive(true);
-                
-                 break;
-          
+                Helmet.SetActive(false);
+
+                break;
+
+
+             case EquipmentType.NoneVest:
+
+                Vest.SetActive(false);
+
+                break;
+
              case EquipmentType.Helmet:
-                 m3.gameObject.SetActive(true);
 
-                 break;
+                Helmet.SetActive(true);
+
+                break;
             
             
              case EquipmentType.Vest:
-                  m3.gameObject.SetActive(true);
 
-                  break;
+                Vest.SetActive(true);
+
+                break;
             
-              default:
-                  break;
+             default:
+                 break;
         }
         
         currentEquipment = equipmentType;

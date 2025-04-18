@@ -34,29 +34,28 @@ public class PlayerWeapon : MonoBehaviour
     
     private void Start()
     {
-       emptyGun.gameObject.SetActive(true);
-       ak47.gameObject.SetActive(false);
-       m3.gameObject.SetActive(false);
+
        SetWeapon(WeaponType.None);
     }
     
 
     public void SetWeapon(WeaponType weaponType)
     {
-        emptyGun.gameObject.SetActive(false);
-        ak47.gameObject.SetActive(false);
-        m3.gameObject.SetActive(false);
         
         switch (weaponType)
         {
-            case WeaponType.None:
-              
+
+           case WeaponType.None:
+
+                ak47.gameObject.SetActive(false);
+                m3.gameObject.SetActive(false);
                 emptyGun.gameObject.SetActive(true);
+
                 LeftHandTarget = emptyGun.LeftHandTarget;
                 RightHandTarget = emptyGun.RightHandTarget;
                 break;
-            
-          case WeaponType.AK47:
+
+            case WeaponType.AK47:
               
               ak47.gameObject.SetActive(true);
               LeftHandTarget = ak47.LeftHandTarget;

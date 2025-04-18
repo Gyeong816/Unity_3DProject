@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour
         if (isAiming)
         {
             // 조준 중일때는 카메라 정면 기준 약간 오른쪽 회전
-            Quaternion rot = Quaternion.AngleAxis(50f, Vector3.up); 
+            Quaternion rot = Quaternion.AngleAxis(30f, Vector3.up); 
             targetDirection = rot * camForward;
         }
         else if (moveInput.sqrMagnitude > 0.01f)

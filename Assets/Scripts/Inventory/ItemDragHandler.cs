@@ -11,18 +11,20 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public int itemWidth = 1;
     public int itemHeight = 1;
     public bool isWeapon = false;
-    public bool isEquipment = false;
+    public bool isHelmet = false;
+    public bool isVest = false;
     
-    public PlayerWeapon.WeaponType weaponType = PlayerWeapon.WeaponType.None;
+    public PlayerWeapon.WeaponType weaponType;
     private PlayerWeapon.WeaponType noneWeapon = PlayerWeapon.WeaponType.None;
     
-    public PlayerEquipment.EquipmentType equipmentType = PlayerEquipment.EquipmentType.None;
-    private PlayerEquipment.EquipmentType noneEquipment = PlayerEquipment.EquipmentType.None;
+    public PlayerEquipment.EquipmentType equipmentType;
+    private PlayerEquipment.EquipmentType noneHelmet = PlayerEquipment.EquipmentType.NoneHelmet;
+    private PlayerEquipment.EquipmentType noneVest = PlayerEquipment.EquipmentType.NoneVest;
 
     [Header("Pivot Settings")]
-    public float pivotX = 0f;
-    public float pivotY = 1f;
-    public float rotatedpivotY = 0f;
+    public float pivotX = 0.5f;
+    public float pivotY = 0.5f;
+    public float rotatedpivotY = 0.5f;
 
     [Header("References")]
     public InventoryPanel inventoryPanel;
@@ -39,8 +41,10 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private bool isDragging = false; 
     private bool isrotated = false;
     private bool originalRotation = false;
-    private bool takeWeaponSlot = false;
-    private bool takeEquipment = false;
+
+    private bool weaponSlot = false;
+    private bool helmetSlot = false;
+    private bool vestSlot = false;
     private bool canPlace = false;
 
     private List<Slot> occupiedSlots = new List<Slot>();
@@ -109,12 +113,27 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 transform.position = slot.transform.position;
                 OccupySlots(slot.x, slot.y);
 
-                if (takeWeaponSlot)
+                if (weaponSlot)
                 {
                     itemRect.sizeDelta = new Vector2(itemWidth * 100f, itemHeight * 100f);
                     rt.pivot = new Vector2(pivotX, pivotY);
-                    takeWeaponSlot = false;
+                    weaponSlot = false;
                     playerWeapon.SetWeapon(noneWeapon);
+                }
+                else if (helmetSlot)
+                {
+                    itemRect.sizeDelta = new Vector2(itemWidth * 100f, itemHeight * 100f);
+                    rt.pivot = new Vector2(pivotX, pivotY);
+                    helmetSlot = false;
+                    playerEquipment.SetEquipment(noneHelmet);
+                }
+                else if (vestSlot) 
+                {
+                    itemRect.sizeDelta = new Vector2(itemWidth * 100f, itemHeight * 100f);
+                    rt.pivot = new Vector2(pivotX, pivotY);
+                    vestSlot = false;
+                    playerEquipment.SetEquipment(noneVest);
+
                 }
             }
             else
@@ -122,17 +141,29 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
                 ReturnItem();  
             }
         }
-        else if (target != null && target.CompareTag("WeaponSlot") && isWeapon)
+        else if (target.CompareTag("WeaponSlot") && isWeapon)
         {
-            takeWeaponSlot = true;
-            transform.SetParent(target.transform);
-            transform.position = target.transform.position;
+            weaponSlot = true;
 
-            RectTransform slotRect = target.GetComponent<RectTransform>();
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            itemRect.sizeDelta = slotRect.sizeDelta;
+            EquipItem(target, itemRect);
 
             playerWeapon.SetWeapon(weaponType);
+        }
+        else if (target.CompareTag("HelmetSlot") && isHelmet)
+        {
+            helmetSlot = true;
+
+            EquipItem(target, itemRect);
+
+            playerEquipment.SetEquipment(equipmentType);
+        }
+        else if (target.CompareTag("VestSlot") && isVest)
+        {
+            vestSlot = true;
+
+            EquipItem(target, itemRect);
+
+            playerEquipment.SetEquipment(equipmentType);
         }
         else
         {
@@ -142,6 +173,17 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         canvasGroup.blocksRaycasts = true;
     }
 
+    private void EquipItem(GameObject target, RectTransform itemRect)
+    {
+        transform.SetParent(target.transform);
+        transform.position = target.transform.position;
+
+        RectTransform slotRect = target.GetComponent<RectTransform>();
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        itemRect.sizeDelta = slotRect.sizeDelta;
+
+
+    }
     private void ReturnItem()
     {
         transform.SetParent(originalParent);
@@ -165,7 +207,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             itemImage.rectTransform.localEulerAngles = Vector3.zero;
         }
 
-        if (takeWeaponSlot)
+        if(weaponSlot || vestSlot || helmetSlot)
         {
             rt.pivot = new Vector2(0.5f, 0.5f);
         }
