@@ -7,19 +7,11 @@ using UnityEngine.PlayerLoop;
 public class PlayerWeapon : MonoBehaviour
 {
     [Header("Weapon")] 
+    public EmptyGun emptyGun;
     public Ak47 ak47;
     public M3 m3;
+    
 
-    
-    
-    [Range(0f, 1f)] public float IKWeight = 1f;
-    public Transform LeftHandTarget;
-    public Transform RightHandTarget;
-    
-    
-    
-    private bool isFiring;
-    
     public enum WeaponType 
     { 
         None, 
@@ -27,37 +19,58 @@ public class PlayerWeapon : MonoBehaviour
         M3
     }
     
-    private WeaponType currentWeapon;
     
+    public float IKWeight = 1f;
+    public Transform LeftHandTarget;
+    public Transform RightHandTarget;
+
+
+
+
+    private float nextFireTime = 0;
+    private WeaponType currentWeapon;
     
     
     
     private void Start()
     {
-      ak47.gameObject.SetActive(false);
-      m3.gameObject.SetActive(false);
+       emptyGun.gameObject.SetActive(true);
+       ak47.gameObject.SetActive(false);
+       m3.gameObject.SetActive(false);
+       SetWeapon(WeaponType.None);
     }
-
-
+    
 
     public void SetWeapon(WeaponType weaponType)
     {
+        emptyGun.gameObject.SetActive(false);
         ak47.gameObject.SetActive(false);
         m3.gameObject.SetActive(false);
         
         switch (weaponType)
         {
+            case WeaponType.None:
+              
+                emptyGun.gameObject.SetActive(true);
+                LeftHandTarget = emptyGun.LeftHandTarget;
+                RightHandTarget = emptyGun.RightHandTarget;
+                break;
+            
           case WeaponType.AK47:
               
               ak47.gameObject.SetActive(true);
               LeftHandTarget = ak47.LeftHandTarget;
               RightHandTarget = ak47.RightHandTarget;
-              
-              break;
-          case WeaponType.M3:
-              m3.gameObject.SetActive(true);
               break;
           
+          case WeaponType.M3:
+              m3.gameObject.SetActive(true);
+              LeftHandTarget = m3.LeftHandTarget;
+              RightHandTarget = m3.RightHandTarget;
+              break;
+            
+            default:
+                break;
         }
         
         currentWeapon = weaponType;
@@ -67,6 +80,8 @@ public class PlayerWeapon : MonoBehaviour
     {
         switch (currentWeapon)
         {
+            case WeaponType.None:
+                return emptyGun.transform;
             case WeaponType.AK47:
                 return ak47.transform;
             case WeaponType.M3:
@@ -79,18 +94,24 @@ public class PlayerWeapon : MonoBehaviour
     public void Fire()
     {
         switch (currentWeapon)
-        {
+        { 
+            case WeaponType.None:
+                emptyGun.Fire();
+                break;
             case WeaponType.AK47:
-                ak47.Fire();
+                if (Time.time >= nextFireTime)
+                {
+                    nextFireTime = Time.time + ak47.data.fireRate;
+                    ak47.Fire();
+                }
                 break;
             case WeaponType.M3:
-                
+                m3.Fire();
+                break;
+            default:
                 break;
         }
     }
   
-    public void SetFire(bool isfiring)
-    {
-        isFiring = isfiring;
-    }
+
 }

@@ -25,17 +25,15 @@ public class HitPart : MonoBehaviour
             case Parts.Leg:
                 damageValue = 1f;
                 break;
+            case Parts.Helmet:
+                damageValue = 0f;
+                break;
+            case Parts.Vest:
+                damageValue = 2f;
+                break;
             default:
                 damageValue = 0f;
                 break;
         }
     }
-}
-public enum Parts
-{
-    Unknown,
-    Body,
-    Head,
-    Leg,
-    Arm
 }

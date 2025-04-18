@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
-{
+{ 
     private static readonly int HEADSHOT = Animator.StringToHash("Headshot");
     private static readonly int DIE = Animator.StringToHash("Die");
     
     public Animator animator;
-    
-    
     public float hp = 100;
+    public Vest vest;
     
     
     private bool isDead = false;
+    
+    
+    
+   
 
    
     public void TakeHit(Parts part, float damage)
@@ -37,6 +41,20 @@ public class Enemy : MonoBehaviour
             case Parts.Leg:
                 Debug.Log("Leg Hit");
                 TakeDamage(damage);
+                break;
+            case Parts.Helmet:
+                Debug.Log("Helmet Hit");
+                TakeDamage(damage);
+                break;
+            case Parts.Vest:
+                Debug.Log("Vest Hit");
+                float reduceddamage = damage * (1f - vest.damageReductionRate);
+                vest.durability -= reduceddamage;
+                Debug.Log($"[방탄복 보호] 피해 감소됨: {reduceddamage}, 방탄복 내구도 {vest.durability}");
+                
+                TakeDamage(reduceddamage);
+                break;
+            default:
                 break;
         }
         

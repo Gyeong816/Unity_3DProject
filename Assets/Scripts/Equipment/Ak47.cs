@@ -16,33 +16,24 @@ public class Ak47 : MonoBehaviour
     
     public Transform WeaponRoot;
     public Transform Muzzle;
-    public float WeaponDamage;
+   
+    
+    [Range(0f, 1f)] public float IKWeight = 1f;
     
     
-    private float nextFireTime;
- 
     
-   [Range(0f, 1f)] public float IKWeight = 1f;
-   
-   private Quaternion originalLocalRotation;
-   private bool isFiring;
-   
-   
+    
+    
+    private Quaternion originalLocalRotation;
+    private bool isFiring;
    
    
-   public void SetFire(bool isfiring)
-   {
-       isFiring = isfiring;
-   }
+   
+    
 
    private void Update()
    {
-       if (isFiring && Time.time >= nextFireTime)
-       {
-           nextFireTime = Time.time + data.fireRate;
-           Fire();
-       }
-
+       
        Debug.DrawRay(Muzzle.transform.position, Muzzle.transform.forward * data.range, Color.red);
    }
 
@@ -56,9 +47,10 @@ public class Ak47 : MonoBehaviour
     
        if (Physics.Raycast(ray, out RaycastHit hit, data.range))
        {
-           CombatSystem.Instance.ApplyDamage(hit,WeaponDamage); 
+           CombatSystem.Instance.ApplyDamage(hit,data.damage); 
        }
    }
+   
    private void Recoil()
    {
        

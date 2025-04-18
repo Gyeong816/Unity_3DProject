@@ -1,6 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+public enum Parts
+{
+    Body,
+    Head,
+    Leg,
+    Arm,
+    Helmet,
+    Vest
+}
 
 
