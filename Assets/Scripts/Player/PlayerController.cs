@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public Transform cameraTransform;
     public CameraController cameraController;
     public PlayerIKHandler ikHandler;
-    //public Ak47 equipment;
+    
 
     public PlayerWeapon playerWeapon;
     
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         cameraController.SetCrouch(isCrouchAiming);
         ikHandler.AimIK(isAiming);
         
-       // playerWeapon.SetFire(isAimFiring);
+   
         
         cameraController.SetShake(isAimFiring);
         

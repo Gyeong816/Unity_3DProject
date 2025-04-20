@@ -11,14 +11,43 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public float hp = 100;
     public Vest vest;
-    
-    
-    private bool isDead = false;
-    
-    
-    
-   
 
+    public GameObject Vest1; 
+
+    public bool hasVest1 = true;
+
+    public Collider triggerCollider;
+
+
+    private bool isDead = false;
+
+    public bool vestSpawned = false;
+
+
+
+
+    private void Awake()
+    {
+
+        triggerCollider.enabled = false;
+    }
+
+
+    public void SetVestSpawned(bool value)
+    {
+        vestSpawned = value;
+    }
+
+    public void UneqiupVest1()
+    {
+
+        Vest1.SetActive(false);
+
+    }
+
+
+
+    public EnemyIKHandler enemyIKHandler;
    
     public void TakeHit(Parts part, float damage)
     {
@@ -28,7 +57,7 @@ public class Enemy : MonoBehaviour
         {
             case Parts.Head:
                 Debug.Log(" Head Hit");
-                HeadShotDie();
+                HeadShotAnimation();
                 break;
             case Parts.Body:
                 Debug.Log("Body Hit");
@@ -60,18 +89,26 @@ public class Enemy : MonoBehaviour
         
     }
 
-    private void HeadShotDie()
+    private void HeadShotAnimation()
     {
         animator.SetTrigger(HEADSHOT);
-        isDead = true;
+        Die();
+    }
+
+    private void DieAnimation()
+    {
+        animator.SetTrigger(DIE);
+        Die();
     }
 
     private void Die()
     {
-        animator.SetTrigger(DIE);
+        enemyIKHandler.Die();
         isDead = true;
+
+        triggerCollider.enabled = true; 
     }
-    
+
     private void TakeDamage(float damage)
     {
         hp -= damage;
@@ -79,8 +116,10 @@ public class Enemy : MonoBehaviour
         
         if (hp <= 0)
         {
-            Die();
+            DieAnimation();
         }
     }
-    
+
+
+ 
 }

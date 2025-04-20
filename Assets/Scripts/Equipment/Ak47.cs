@@ -8,9 +8,11 @@ using Random = UnityEngine.Random;
 public class Ak47 : MonoBehaviour
 {
     public GunData data;
-    
-    
-    
+
+    public GameObject bulletImpactEffect;
+    public GameObject enemyImpactEffect;   
+    public GameObject groundImpactEffect;  
+
     public Transform LeftHandTarget;
     public Transform RightHandTarget;
     
@@ -43,13 +45,35 @@ public class Ak47 : MonoBehaviour
        originalLocalRotation = transform.localRotation;
        Recoil();
 
-       Ray ray = new Ray(Muzzle.transform.position, Muzzle.transform.forward);
-    
-       if (Physics.Raycast(ray, out RaycastHit hit, data.range))
-       {
-           CombatSystem.Instance.ApplyDamage(hit,data.damage); 
-       }
-   }
+      
+
+        Ray ray = new Ray(Muzzle.transform.position, Muzzle.transform.forward);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, data.range))
+        {
+            CombatSystem.Instance.ApplyDamage(hit, data.damage);
+
+            
+            Quaternion rotation = Quaternion.LookRotation(hit.normal);
+
+            
+            int hitLayer = hit.collider.gameObject.layer;
+
+            switch (hitLayer)
+            {
+                case int n when n == LayerMask.NameToLayer("Enemy"):
+                    Instantiate(enemyImpactEffect, hit.point, rotation);
+                    break;
+                case int n when n == LayerMask.NameToLayer("Ground"):
+                    Instantiate(groundImpactEffect, hit.point, rotation);
+                    break;
+
+                default:
+                    Instantiate(bulletImpactEffect, hit.point, rotation); 
+                    break;
+            }
+        }
+    }
    
    private void Recoil()
    {

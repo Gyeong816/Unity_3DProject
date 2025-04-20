@@ -13,6 +13,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public bool isWeapon = false;
     public bool isHelmet = false;
     public bool isVest = false;
+
     
     public PlayerWeapon.WeaponType weaponType;
     private PlayerWeapon.WeaponType noneWeapon = PlayerWeapon.WeaponType.None;
@@ -45,7 +46,11 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private bool weaponSlot = false;
     private bool helmetSlot = false;
     private bool vestSlot = false;
+
+    
     private bool canPlace = false;
+
+
 
     private List<Slot> occupiedSlots = new List<Slot>();
 
@@ -173,6 +178,20 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         canvasGroup.blocksRaycasts = true;
     }
 
+
+
+    public void Init(InventoryPanel inventory, PlayerWeapon weapon, PlayerEquipment equipment, bool EnemyVestSlot = false)
+    {
+        inventoryPanel = inventory;
+        playerWeapon = weapon;
+        playerEquipment = equipment;
+
+        vestSlot = EnemyVestSlot;
+    }
+
+
+
+
     private void EquipItem(GameObject target, RectTransform itemRect)
     {
         transform.SetParent(target.transform);
@@ -207,7 +226,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             itemImage.rectTransform.localEulerAngles = Vector3.zero;
         }
 
-        if(weaponSlot || vestSlot || helmetSlot)
+        if(weaponSlot || vestSlot || helmetSlot )
         {
             rt.pivot = new Vector2(0.5f, 0.5f);
         }

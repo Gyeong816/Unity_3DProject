@@ -9,6 +9,7 @@ public class PlayerEquipment : MonoBehaviour
     [Header("PlayerEquipment")]
     public GameObject Helmet;
     public GameObject Vest;
+    public GameObject Vest1;
 
 
     public enum EquipmentType 
@@ -16,7 +17,8 @@ public class PlayerEquipment : MonoBehaviour
         NoneHelmet,
         NoneVest, 
         Helmet,
-        Vest
+        Vest,
+        Vest1
     }
 
 
@@ -54,6 +56,7 @@ public class PlayerEquipment : MonoBehaviour
              case EquipmentType.NoneVest:
 
                 Vest.SetActive(false);
+                Vest1.SetActive(false);
 
                 break;
 
@@ -69,8 +72,14 @@ public class PlayerEquipment : MonoBehaviour
                 Vest.SetActive(true);
 
                 break;
-            
-             default:
+
+            case EquipmentType.Vest1:
+
+                Vest1.SetActive(true);
+
+                break;
+
+            default:
                  break;
         }
         
