@@ -15,13 +15,24 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9b89611000504a9585efec19be4faf3b27800/43/5c97160a/Animator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/Enemy.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Enemy/TestEnemy.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Data/FieldItemInfo.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Data/InventorySaveData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Data/ItemDatabase.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Equipment/EnemyAk47.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Equipment/Vest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Inventory/EnemyInventory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Inventory/PlayerDataManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerEquipment.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/PlayerWeapon.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Test/FieldItemUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Test/InGameInventoryLoader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Test/MainmenuInventoryLoader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Test/TradeManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Test/VestUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/ExitCoillder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/UIManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.cinemachine@2.9.7/Runtime/Helpers/CinemachineInputProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.9/Shaders/Lit.shader" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -49,6 +60,14 @@
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.16f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\KGA\Documents\GitHub\Unity_3DProject -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\KGA\Documents\GitHub\Unity_3DProject" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="독립실행형 플레이어" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$USER_HOME$/Desktop/3DProject/built\3DProject.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\KGA\Desktop\3DProject" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
@@ -111,6 +130,34 @@
       <workItem from="1744890938443" duration="1639000" />
       <workItem from="1744935975995" duration="27913000" />
       <workItem from="1744967310627" duration="576000" />
+      <workItem from="1745195820499" duration="8090000" />
+      <workItem from="1745209896116" duration="88000" />
+      <workItem from="1745209996528" duration="23604000" />
+      <workItem from="1745281331895" duration="608000" />
+      <workItem from="1745282914776" duration="33947000" />
+      <workItem from="1745368650248" duration="111000" />
+      <workItem from="1745369229691" duration="12000" />
+      <workItem from="1745369279828" duration="553000" />
+      <workItem from="1745371473291" duration="5114000" />
+      <workItem from="1745377528742" duration="316000" />
+      <workItem from="1745381459529" duration="26413000" />
+      <workItem from="1745453492068" duration="11311000" />
+      <workItem from="1745468803734" duration="22857000" />
+      <workItem from="1745540275167" duration="6764000" />
+      <workItem from="1745553590362" duration="19592000" />
+      <workItem from="1745802128061" duration="7630000" />
+      <workItem from="1745812820954" duration="14646000" />
+      <workItem from="1745837773080" duration="2000" />
+      <workItem from="1745837862950" duration="1777000" />
+      <workItem from="1745885903678" duration="11096000" />
+      <workItem from="1745899897762" duration="21437000" />
+      <workItem from="1745921902491" duration="4572000" />
+      <workItem from="1745972661231" duration="8488000" />
+      <workItem from="1745985613014" duration="15812000" />
+      <workItem from="1746148223985" duration="6441000" />
+      <workItem from="1746159231725" duration="11773000" />
+      <workItem from="1746172864359" duration="344000" />
+      <workItem from="1746175734453" duration="1217000" />
     </task>
     <servers />
   </component>
@@ -126,5 +173,24 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/CombetSystem/CombetSystem.cs</url>
+          <line>41</line>
+          <properties documentPath="C:\Users\KGA\Documents\GitHub\Unity_3DProject\Assets\Scripts\CombetSystem\CombetSystem.cs" containingFunctionPresentation="메서드 'ApplyDamage'">
+            <startOffsets>
+              <option value="1167" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1168" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
