@@ -382,7 +382,9 @@ public class WeaponUI: MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 if (weaponSlot)
                 {
                     playerWeapon.SetWeapon(noneWeapon);
+                    GameData.Instance.selectedWeaponType = PlayerWeapon.WeaponType.NONE;
                 }
+            
                 InventoryManager.Instance.UnregisterItem(itemUuId);
                 InventoryManager.Instance.UnregisterStashItem(itemUuId);
                 Destroy(gameObject);

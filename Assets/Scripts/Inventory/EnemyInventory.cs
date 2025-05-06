@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +8,6 @@ public class EnemyInventory : MonoBehaviour
     public InventoryPanel inventoryPanel;
     public PlayerWeapon playerWeapon;
     public PlayerEquipment playerEquipment;
-
-    public EnemyController currentEnemy;
 
     public Image vestSlot;
     public Image weaponSlot;
@@ -23,148 +19,106 @@ public class EnemyInventory : MonoBehaviour
     public GameObject gunPrefab;
     public GameObject helmet1Prefab;
 
+    private EnemyController currentEnemy;
 
-    private GameObject spawnedVest;
-    private GameObject spawnedGun;
-    private GameObject spawnedHelmet;
 
-    private void Update()
+    void Update()
     {
-        if (spawnedVest != null)
+
+        if (currentEnemy == null) return;
+
+        if (vestSlot.transform.childCount == 0 && currentEnemy.hasVest)
         {
-            if (spawnedVest.transform.parent != vestSlot.transform)
-            {
- 
-
-                currentEnemy.UneqiupVest();
-
-                spawnedVest = null; 
-            }
+            currentEnemy.hasVest = false;
+            if (currentEnemy.vest != null)
+                currentEnemy.vest.SetActive(false);
         }
-        if (spawnedGun != null)
+
+        if (weaponSlot.transform.childCount == 0 && currentEnemy.hasGun)
         {
-            if (spawnedGun.transform.parent != weaponSlot.transform)
-            {
- 
-
-                currentEnemy.UneqiupAk47();
-
-                spawnedGun = null; 
-            }
+            currentEnemy.hasGun = false;
+            if (currentEnemy.enemyAk47 != null)
+                currentEnemy.enemyAk47.SetActive(false);
         }
-        if (spawnedHelmet != null)
+
+        if (helmetSlot.transform.childCount == 0 && currentEnemy.hasHelmet)
         {
-            if (spawnedHelmet.transform.parent != helmetSlot.transform)
-            {
- 
-
-                currentEnemy.UneqiupHelmet();
-
-                spawnedGun = null; 
-            }
+            currentEnemy.hasHelmet = false;
+            if (currentEnemy.helmet != null)
+                currentEnemy.helmet.SetActive(false);
         }
     }
 
 
-    public void SpawnVest1()
+    public void SetEnemy(EnemyController enemy)
     {
-        spawnedVest = Instantiate(vest1Prefab, inventoryPanel.transform);
+        currentEnemy = enemy;
 
-        var vestUI = spawnedVest.GetComponent<VestUI>();
-        vestUI.Init(inventoryPanel,playerEquipment, true);
+        ClearInventory();
 
-        RectTransform parent = vestSlot.rectTransform;
-        RectTransform rt = spawnedVest.GetComponent<RectTransform>();
+        if (currentEnemy.hasVest)
+            SpawnVest();
 
-        spawnedVest.transform.SetParent(vestSlot.transform);
+        if (currentEnemy.hasGun)
+            SpawnGun();
 
-        string generatedUuId = Guid.NewGuid().ToString();
-        vestUI.itemUuId = generatedUuId;
-
-        rt.anchorMin = new Vector2(0.5f, 0.5f);
-        rt.anchorMax = new Vector2(0.5f, 0.5f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.anchoredPosition = Vector2.zero;
-        rt.sizeDelta = parent.sizeDelta;
-        vestUI.itemImage.rectTransform.sizeDelta = parent.sizeDelta;
-    }
-    public void SpawnVest3()
-    {
-        spawnedVest = Instantiate(vest3Prefab, inventoryPanel.transform);
-
-        var vestUI = spawnedVest.GetComponent<VestUI>();
-        vestUI.Init(inventoryPanel, playerEquipment, true);
-
-        RectTransform parent = vestSlot.rectTransform;
-        RectTransform rt = spawnedVest.GetComponent<RectTransform>();
-
-        spawnedVest.transform.SetParent(vestSlot.transform);
-
-        string generatedUuId = Guid.NewGuid().ToString();
-        vestUI.itemUuId = generatedUuId;
-
-        rt.anchorMin = new Vector2(0.5f, 0.5f);
-        rt.anchorMax = new Vector2(0.5f, 0.5f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.anchoredPosition = Vector2.zero;
-        rt.sizeDelta = parent.sizeDelta;
-        vestUI.itemImage.rectTransform.sizeDelta = parent.sizeDelta;
-
-       
-    }
-    
-    public void SpawnHelmet1()
-    {
-        spawnedHelmet = Instantiate(helmet1Prefab, inventoryPanel.transform);
-
-        var helmetUI = spawnedHelmet.GetComponent<HelmetUI>();
-        helmetUI.Init(inventoryPanel, playerEquipment, true);
-
-        RectTransform parent = helmetSlot.rectTransform;
-        RectTransform rt = spawnedHelmet.GetComponent<RectTransform>();
-
-        spawnedHelmet.transform.SetParent(helmetSlot.transform);
-
-        string generatedUuId = Guid.NewGuid().ToString();
-        helmetUI.itemUuId = generatedUuId;
-
-        rt.anchorMin = new Vector2(0.5f, 0.5f);
-        rt.anchorMax = new Vector2(0.5f, 0.5f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.anchoredPosition = Vector2.zero;
-        rt.sizeDelta = parent.sizeDelta;
-        helmetUI.itemImage.rectTransform.sizeDelta = parent.sizeDelta;
-
-
-    }
-    
-    public void SpawnGun()
-    {
-        spawnedGun = Instantiate(gunPrefab, inventoryPanel.transform);
-
-        var gunUI = spawnedGun.GetComponent<WeaponUI>();
-        gunUI.Init(inventoryPanel, playerWeapon, true);
-
-        RectTransform parent = weaponSlot.rectTransform;
-        RectTransform rt = spawnedGun.GetComponent<RectTransform>();
-
-        spawnedGun.transform.SetParent(weaponSlot.transform);
-
-        string generatedUuId = Guid.NewGuid().ToString();
-        gunUI.itemUuId = generatedUuId;
-
-        rt.anchorMin = new Vector2(0.5f, 0.5f);
-        rt.anchorMax = new Vector2(0.5f, 0.5f);
-        rt.pivot = new Vector2(0.5f, 0.5f);
-        rt.anchoredPosition = Vector2.zero;
-        rt.sizeDelta = parent.sizeDelta;
-        gunUI.itemImage.rectTransform.sizeDelta = parent.sizeDelta;
+        if (currentEnemy.hasHelmet)
+            SpawnHelmet();
     }
 
-    public void SetEnemy(EnemyController CurrentEnemy)
+    private void ClearInventory()
     {
-        currentEnemy = CurrentEnemy;
+        foreach (Transform child in vestSlot.transform)
+            Destroy(child.gameObject);
+        foreach (Transform child in weaponSlot.transform)
+            Destroy(child.gameObject);
+        foreach (Transform child in helmetSlot.transform)
+            Destroy(child.gameObject);
     }
 
+    private void SpawnVest()
+    {
+        GameObject prefab = currentEnemy.enemyType == EnemyType.Enemy1 ? vest1Prefab : vest3Prefab;
+        GameObject go = Instantiate(prefab, vestSlot.transform);
 
+        var ui = go.GetComponent<VestUI>();
+        ui.Init(inventoryPanel, playerEquipment, true);
+        ui.itemUuId = Guid.NewGuid().ToString();
+
+        ApplySlotTransform(go.GetComponent<RectTransform>(), vestSlot.rectTransform);
+        ui.itemImage.rectTransform.sizeDelta = vestSlot.rectTransform.sizeDelta;
+    }
+
+    private void SpawnGun()
+    {
+        GameObject go = Instantiate(gunPrefab, weaponSlot.transform);
+
+        var ui = go.GetComponent<WeaponUI>();
+        ui.Init(inventoryPanel, playerWeapon, true);
+        ui.itemUuId = Guid.NewGuid().ToString();
+
+        ApplySlotTransform(go.GetComponent<RectTransform>(), weaponSlot.rectTransform);
+        ui.itemImage.rectTransform.sizeDelta = weaponSlot.rectTransform.sizeDelta;
+    }
+
+    private void SpawnHelmet()
+    {
+        GameObject go = Instantiate(helmet1Prefab, helmetSlot.transform);
+
+        var ui = go.GetComponent<HelmetUI>();
+        ui.Init(inventoryPanel, playerEquipment, true);
+        ui.itemUuId = Guid.NewGuid().ToString();
+
+        ApplySlotTransform(go.GetComponent<RectTransform>(), helmetSlot.rectTransform);
+        ui.itemImage.rectTransform.sizeDelta = helmetSlot.rectTransform.sizeDelta;
+    }
+
+    private void ApplySlotTransform(RectTransform target, RectTransform parent)
+    {
+        target.anchorMin = new Vector2(0.5f, 0.5f);
+        target.anchorMax = new Vector2(0.5f, 0.5f);
+        target.pivot = new Vector2(0.5f, 0.5f);
+        target.anchoredPosition = Vector2.zero;
+        target.sizeDelta = parent.sizeDelta;
+    }
 }

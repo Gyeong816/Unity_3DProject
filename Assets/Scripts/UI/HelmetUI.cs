@@ -316,6 +316,7 @@ public class HelmetUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 if (helmetSlot)
                 {
                     playerEquipment.SetEquipment(noneHelmet);
+                    GameData.Instance.selectedVestType = PlayerEquipment.EquipmentType.NONEHELMET;
                 }
                 InventoryManager.Instance.UnregisterItem(itemUuId);
                 InventoryManager.Instance.UnregisterStashItem(itemUuId);

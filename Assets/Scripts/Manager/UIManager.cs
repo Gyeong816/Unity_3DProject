@@ -99,6 +99,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowExitCanvas()
     {
+        InventoryManager.Instance.SaveToFile();
         ingameCanvas.enabled = false;
         inventoryCanvas.enabled = false;
         deathCanvas.enabled = false;
@@ -178,39 +179,7 @@ public class UIManager : MonoBehaviour
                 enemyInventory.SetActive(true);
                 enemyInven.SetEnemy(currentEnemy);
 
-                switch (currentEnemy.enemyType)
-                {
-                    case EnemyType.Enemy1:
-                        if (!currentEnemy.vestSpawned)
-                        {
-                            enemyInven.SpawnVest1();
-                            currentEnemy.SetVestSpawned(true);
-                        }
-                        if (!currentEnemy.gunSpawned)
-                        {
-                            enemyInven.SpawnGun();
-                            currentEnemy.SetGunSpawned(true);
-                        }
-                        break;
-
-                    case EnemyType.Enemy2:
-                        if (!currentEnemy.vestSpawned)
-                        {
-                            enemyInven.SpawnVest3();
-                            currentEnemy.SetVestSpawned(true);
-                        }
-                        if (!currentEnemy.gunSpawned)
-                        {
-                            enemyInven.SpawnGun();
-                            currentEnemy.SetGunSpawned(true);
-                        }
-                        if (!currentEnemy.helmetSpawned)
-                        {
-                            enemyInven.SpawnHelmet1();
-                            currentEnemy.SetHelmetSpawned(true);
-                        }
-                        break;
-                }
+                
             }
             else if (currentLootbox != null)
             {

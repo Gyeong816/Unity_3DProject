@@ -351,6 +351,7 @@ public class VestUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 if (vestSlot)
                 {
                     playerEquipment.SetEquipment(noneVest);
+                    GameData.Instance.selectedVestType = PlayerEquipment.EquipmentType.NONEVEST;
                 }
                 InventoryManager.Instance.UnregisterItem(itemUuId);
                 InventoryManager.Instance.UnregisterStashItem(itemUuId);

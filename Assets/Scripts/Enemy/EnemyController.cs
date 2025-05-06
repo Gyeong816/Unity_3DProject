@@ -33,8 +33,10 @@ public class EnemyController : MonoBehaviour
     public LayerMask obstacleMask;
     public float stopDistance = 5f;
 
-    
-    
+    public bool hasVest = false;
+    public bool hasGun = false;
+    public bool hasHelmet = false;
+
     [Header("Combat")]
     public float hp = 100;
     public GameObject vest;
