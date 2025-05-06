@@ -25,15 +25,21 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     
     
+    
+    
     private Vector2 moveInput;
     public bool isAiming;
     private bool isJumping;
     private bool isRunning;
     private bool isFiring;
-    private bool isAimFiring;
-    private bool isCrouching;
+    public bool IsCrouching {get; private set;}
+
+    public bool isReloading;
+    private bool reloadStarted = false;
+    
     private bool isCrouchAiming;
     private bool isMoving;
+    private bool isDead;
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -41,16 +47,14 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (isDead) return;
+      
         HandleInput();
         ApplyGravity();
         
         cameraController.SetAiming(isAiming);
         cameraController.SetCrouch(isCrouchAiming);
         ikHandler.AimIK(isAiming);
-        
-   
-        
-        cameraController.SetShake(isAimFiring);
         
         if (IsGrounded() && isJumping)
         {
@@ -67,71 +71,98 @@ public class PlayerController : MonoBehaviour
                 playerWeapon.Fire();
             }
         }
-        else
-        {
-            
-            isFiring = false;
-        }
-
-        if (isRunning && !isAiming &&!isCrouching)
+        
+        if (isRunning && !isAiming &&!IsCrouching)
         {
             
             Move(runSpeed);
             
         }
-        else if (moveInput.magnitude > 0.1f)
+        else if (isMoving && !isAiming &&!IsCrouching)
         {
-            if (isMoving&&!isCrouching)
-            {
-              
-                Move(walkSpeed);
-            }
-            if (isCrouching)
-            {
+
+            Move(walkSpeed);
+            
+        }
+        else if (IsCrouching&&!isAiming)
+        {
                 
-                Move(aimwalkSpeed);
-            }
+            Move(aimwalkSpeed);
+        }
+
+        if (isReloading && !reloadStarted)
+        {
+            StartReload();
+        }
+
+        if (reloadStarted)
+        {
+            CheckReloadEnd();
         }
         
         UpdateAnimation();
     }
-
-
+    
     
     private void LateUpdate()
     {
-        if (moveInput.sqrMagnitude > 0.01f || isAiming)
+        if (isDead) return;
+        RotateToDirection();
+    }
+    
+    private void StartReload()
+    {
+        playerWeapon.Reload();   
+        if(playerWeapon.noBullet) return;
+        
+        
+        animator.ResetTrigger("Reload"); // 이전 트리거 제거
+        animator.SetTrigger("Reload");
+        animator.SetLayerWeight(3, 1f);
+    
+        ikHandler.SetReloading(true);
+        reloadStarted = true;
+    }
+    private void CheckReloadEnd()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(3); // UpperLayer
+        if (stateInfo.IsName("Reload") && stateInfo.normalizedTime >= 0.9f)
         {
-            RotateToDirection();
+            Debug.Log("장전 애니메이션 종료");
+
+            animator.SetLayerWeight(3, 0f);
+            animator.ResetTrigger("Reload"); 
+
+            ikHandler.SetReloading(false);
+
+            reloadStarted = false;
+            isReloading = false;
         }
     }
-
     private void HandleInput()
     {
 
         
         moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         isMoving = moveInput.magnitude > 0.1f;
-        isAiming = Input.GetMouseButton(1);
+    
+        isAiming = Input.GetMouseButton(1)&&!reloadStarted; 
+        
         isFiring = Input.GetMouseButton(0);
         isJumping = Input.GetKeyDown(KeyCode.Space);
         isRunning = Input.GetKey(KeyCode.LeftShift);
-        
+      
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            isCrouching = !isCrouching; 
+            IsCrouching = !IsCrouching; 
         }
-
-        if (isAiming && isFiring)
+        if (Input.GetKeyDown(KeyCode.R) && !reloadStarted) 
         {
-            isAimFiring = true;
+            isReloading = true;
         }
-        else
-        {
-            isAimFiring = false;
-        }
-        if (isAiming && isCrouching)
+        
+        if (isAiming && IsCrouching)
         {
             isCrouchAiming = true;
         }
@@ -172,7 +203,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Run", false);
         }
 
-        animator.SetBool("Crouch", isCrouching);
+        animator.SetBool("Crouch", IsCrouching);
         
        
     }
@@ -190,13 +221,13 @@ public class PlayerController : MonoBehaviour
 
         if (isAiming)
         {
-            // 조준 중일때는 카메라 정면 기준 약간 오른쪽 회전
+            
             Quaternion rot = Quaternion.AngleAxis(30f, Vector3.up); 
             targetDirection = rot * camForward;
         }
-        else if (moveInput.sqrMagnitude > 0.01f)
+        else 
         {
-            // 조준 아닐 때는 이동 방향 보도록 회전
+            
             targetDirection = camForward * moveInput.y + camRight * moveInput.x;
         }
 
@@ -265,4 +296,20 @@ public class PlayerController : MonoBehaviour
     {
         return controller.isGrounded;
     }
+
+    public void OnPlayerDeath()
+    {
+        isDead = true;
+
+        animator.applyRootMotion = true; 
+        animator.SetTrigger("Die");
+   
+        ikHandler.AimIK(false);
+
+        isReloading = false;
+        reloadStarted = false;
+        isAiming = false;
+    }
+
+
 }

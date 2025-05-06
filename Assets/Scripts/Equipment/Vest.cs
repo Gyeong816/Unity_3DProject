@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Vest : MonoBehaviour
 {
-   public float durability = 100;
+   
    public float damageReductionRate = 0.5f;
 }

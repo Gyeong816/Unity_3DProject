@@ -9,6 +9,12 @@ TagManager:
   - HelmetSlot
   - CinemachineTarget
   - VestSlot
+  - BulletSlot
+  - PlayerSlot
+  - DeleteSlot
+  - StashSlot
+  - ShopSlot
+  - HPSlot
   layers:
   - Default
   - TransparentFX
@@ -19,9 +25,9 @@ TagManager:
   - Ground
   - Enemy
   - Object
-  - 
-  - 
-  - 
+  - Player
+  - PlayerContorller
+  - Wall
   - 
   - 
   - 

@@ -29,4 +29,7 @@ public class GunData
     /// 유효공격범위
     /// </summary>
     public float range = 100.0f;
+    
+    /// <summary>총소리 감지 반경</summary>
+    public float soundRadius = 10.0f;
 }

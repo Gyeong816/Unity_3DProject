@@ -72,3 +72,9 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# 큰 텍스처 파일 및 관련 메타데이터 제외
+Assets/Resources/ApocalypticWasteland/Rocks/*.tif
+Assets/Resources/ApocalypticWasteland/Rocks/*.tif.meta
+Assets/Resources/ApocalypticWasteland/UrbanAssets/**/*.tif
+Assets/Resources/ApocalypticWasteland/UrbanAssets/**/*.tif.meta

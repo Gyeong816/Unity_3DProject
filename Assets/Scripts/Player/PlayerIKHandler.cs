@@ -16,6 +16,8 @@ public class PlayerIKHandler : MonoBehaviour
     
     public Transform gunPosition;
     
+    private bool isReloading = false;
+    
     [Range(0f, 1f)] public float bodyWeight = 0.5f;
     [Range(0f, 1f)] public float headWeight = 0.5f;
     [Range(0f, 1f)] public float clampWeight = 0.5f;
@@ -25,6 +27,10 @@ public class PlayerIKHandler : MonoBehaviour
 
     private bool playerAiming = false;
     
+    
+    private float leftIKCurrentWeight = 1f;
+    private float rightIKCurrentWeight = 1f;
+    public float ikBlendSpeed = 2f;
 
     private void Awake()
     {
@@ -35,24 +41,36 @@ public class PlayerIKHandler : MonoBehaviour
     {
         playerAiming = aim;
     }
+    public void SetReloading(bool reloading)
+    {
+        isReloading = reloading;
+    }
+    
+    void UpdateIKWeight()
+    {
+        float targetLeft = isReloading ? 0f : playerWeapon.IKWeight;
+        float targetRight = playerAiming ? playerWeapon.IKWeight : 0f;
 
-
+        leftIKCurrentWeight = Mathf.Lerp(leftIKCurrentWeight, targetLeft, Time.deltaTime * ikBlendSpeed);
+        rightIKCurrentWeight = Mathf.Lerp(rightIKCurrentWeight, targetRight, Time.deltaTime * ikBlendSpeed);
+    }
 
  private void OnAnimatorIK(int layerIndex)
  {
     if (animator == null || playerWeapon == null) return;
 
-    float rightIKWeight = playerAiming ? playerWeapon.IKWeight : 0f;
-    float leftIKWeight = playerWeapon.IKWeight;
+   
+    
+  
 
     Transform leftHandTarget = playerWeapon.LeftHandTarget;
     Transform rightHandTarget = playerWeapon.RightHandTarget;
     Transform weapon = playerWeapon.GetCurrentWeaponTransform();
     Transform anchor = gunPosition;
 
-    
-    UpdateIK(AvatarIKGoal.LeftHand, leftHandTarget, leftIKWeight);
-    UpdateIK(AvatarIKGoal.RightHand, rightHandTarget, rightIKWeight);
+    UpdateIKWeight(); // 보간 먼저
+    UpdateIK(AvatarIKGoal.LeftHand, leftHandTarget, leftIKCurrentWeight);
+    UpdateIK(AvatarIKGoal.RightHand, rightHandTarget, rightIKCurrentWeight);
     
 
     if (playerAiming)

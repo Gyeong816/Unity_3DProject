@@ -13,14 +13,21 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public bool isWeapon = false;
     public bool isHelmet = false;
     public bool isVest = false;
+    public bool isBullet = false;
 
+    public string itemId;
+    
     
     public PlayerWeapon.WeaponType weaponType;
-    private PlayerWeapon.WeaponType noneWeapon = PlayerWeapon.WeaponType.None;
+    private PlayerWeapon.WeaponType noneWeapon = PlayerWeapon.WeaponType.NONE;
+    
+    public PlayerWeapon.BulletType bulletType;
+   
     
     public PlayerEquipment.EquipmentType equipmentType;
-    private PlayerEquipment.EquipmentType noneHelmet = PlayerEquipment.EquipmentType.NoneHelmet;
-    private PlayerEquipment.EquipmentType noneVest = PlayerEquipment.EquipmentType.NoneVest;
+    
+    private PlayerEquipment.EquipmentType noneHelmet = PlayerEquipment.EquipmentType.NONEHELMET;
+    private PlayerEquipment.EquipmentType noneVest = PlayerEquipment.EquipmentType.NONEVEST;
 
     [Header("Pivot Settings")]
     public float pivotX = 0.5f;
@@ -32,6 +39,9 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public PlayerWeapon playerWeapon;
     public PlayerEquipment playerEquipment;
 
+    [Header("Bullet Info")]
+    public int bulletAmount = 30; 
+    
     private Transform originalParent;
     private Vector2 originalPosition;
     private Canvas canvas;
@@ -170,6 +180,35 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
             playerEquipment.SetEquipment(equipmentType);
         }
+        else if (target.CompareTag("BulletSlot") && isBullet)
+        {
+            var currentWeaponType = playerWeapon.GetCurrentWeaponType();
+
+            
+            if (currentWeaponType == PlayerWeapon.WeaponType.NONE)
+            {
+                Debug.Log("무기가 장착되지 않았습니다. 총알 장착 불가.");
+                ReturnItem();
+                return;
+            }
+
+           
+            if ((currentWeaponType == PlayerWeapon.WeaponType.AK47 && bulletType != PlayerWeapon.BulletType.AK47Bullet) ||
+                (currentWeaponType == PlayerWeapon.WeaponType.M3 && bulletType != PlayerWeapon.BulletType.M3Bullet))
+            {
+                Debug.Log("무기와 총알 타입이 맞지 않습니다.");
+                ReturnItem();
+                return;
+            }
+
+            Debug.Log($"총알 {bulletType} 장착됨 - 수량: {bulletAmount}");
+
+            EquipItem(target, itemRect);
+
+            playerWeapon.SetBullet(bulletType);
+            playerWeapon.AddReserveAmmo(bulletAmount);
+            
+        }
         else
         {
             ReturnItem();
@@ -179,6 +218,25 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     }
 
 
+    public InventoryItemSaveData GetSaveData()
+    {
+        Slot slot = GetComponentInParent<Slot>();
+        if (slot == null) return null;
+
+        return new InventoryItemSaveData
+        {
+            itemId = this.itemId,
+            x = slot.x,
+            y = slot.y,
+            isRotated = this.isrotated
+        };
+    }
+    
+    
+    
+    
+    
+    
 
     public void Init(InventoryPanel inventory, PlayerWeapon weapon, PlayerEquipment equipment, bool EnemyVestSlot = false)
     {

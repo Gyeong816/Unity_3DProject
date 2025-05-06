@@ -27,6 +27,7 @@ public class Crosshair : MonoBehaviour
 
     private void Update()
     {
+        
         if (Input.GetKey(KeyCode.Mouse0))
         {
             currentSpread = maxSpread;

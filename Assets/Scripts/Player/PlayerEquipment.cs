@@ -7,18 +7,23 @@ using UnityEngine.PlayerLoop;
 public class PlayerEquipment : MonoBehaviour
 {
     [Header("PlayerEquipment")]
-    public GameObject Helmet;
-    public GameObject Vest;
+    public GameObject Helmet1;
+    public GameObject Helmet2;
+    
+    
     public GameObject Vest1;
-
+    public GameObject Vest2;
+    public GameObject Vest3;
 
     public enum EquipmentType 
     {
-        NoneHelmet,
-        NoneVest, 
-        Helmet,
-        Vest,
-        Vest1
+        NONEHELMET,
+        NONEVEST, 
+        HELMET1,
+        HELMET2,
+        VEST1,
+        VEST2,
+        VEST3
     }
 
 
@@ -32,8 +37,18 @@ public class PlayerEquipment : MonoBehaviour
     private void Start()
     {
       
-      SetEquipment(EquipmentType.NoneHelmet);
-      SetEquipment(EquipmentType.NoneVest);
+      SetEquipment(EquipmentType.NONEHELMET);
+      SetEquipment(EquipmentType.NONEVEST);
+      
+
+      if (GameData.Instance.selectedHelmetType != PlayerEquipment.EquipmentType.NONEHELMET)
+      {
+          SetEquipment(GameData.Instance.selectedHelmetType); 
+      }
+      if (GameData.Instance.selectedHelmetType != PlayerEquipment.EquipmentType.NONEVEST)
+      {
+          SetEquipment(GameData.Instance.selectedVestType); 
+      }
 
     }
     
@@ -46,40 +61,38 @@ public class PlayerEquipment : MonoBehaviour
         switch (equipmentType)
         {
            
-             case EquipmentType.NoneHelmet:
-
-                Helmet.SetActive(false);
-
+             case EquipmentType.NONEHELMET:
+                Helmet1.SetActive(false);
+                Helmet2.SetActive(false);
                 break;
 
 
-             case EquipmentType.NoneVest:
-
-                Vest.SetActive(false);
-                Vest1.SetActive(false);
-
+             case EquipmentType.NONEVEST:
+                 Vest1.SetActive(false);
+                 Vest2.SetActive(false);
+                 Vest3.SetActive(false);
                 break;
 
-             case EquipmentType.Helmet:
-
-                Helmet.SetActive(true);
-
+             case EquipmentType.HELMET1:
+                Helmet1.SetActive(true);
                 break;
+             
+             case EquipmentType.HELMET2:
+                 Helmet2.SetActive(true);
+                 break;
+
+             case EquipmentType.VEST1:
+                 Vest1.SetActive(true);
+                 break;
             
+             case EquipmentType.VEST2:
+                 Vest2.SetActive(true);
+                 break;
             
-             case EquipmentType.Vest:
-
-                Vest.SetActive(true);
-
-                break;
-
-            case EquipmentType.Vest1:
-
-                Vest1.SetActive(true);
-
-                break;
-
-            default:
+             case EquipmentType.VEST3:
+                 Vest3.SetActive(true);
+                 break;
+             default:
                  break;
         }
         

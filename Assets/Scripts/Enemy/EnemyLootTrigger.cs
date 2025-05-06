@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class EnemyLootTrigger : MonoBehaviour
 {
-    private Enemy owner;
+    private EnemyController owner;
 
     private void Awake()
     {
-        owner = GetComponentInParent<Enemy>(); 
+        owner = GetComponentInParent<EnemyController>(); 
     }
 
     private void OnTriggerEnter(Collider other)
